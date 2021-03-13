@@ -1,5 +1,12 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import java.util.Scanner;
 
 public class Calendar {
 	
@@ -76,6 +83,77 @@ public class Calendar {
 			
 		}
 		return output;
+	}
+	
+	public static Calendar loadCalendar(String filename) {
+		Calendar calendar = new Calendar();
+		File calendarFile = new File(filename);
+		try (Scanner fileScanner = new Scanner(calendarFile)) {
+			while (fileScanner.hasNextLine()) {
+				
+				String type = fileScanner.nextLine();
+				int date = Integer.parseInt(fileScanner.nextLine());
+				String time = fileScanner.nextLine();
+				String description = fileScanner.nextLine();
+				
+				CalendarEvent event;
+				
+				if (type.equals("Symptom Report")) {
+					event = new SymptomReport(date, time);
+					((SymptomReport) event).addDescription(description);
+					calendar.addEvent(event);
+				}
+				else if (type.equals("Test Result")) {
+					event = new TestResult(date, time, description);
+					calendar.addEvent(event);
+				}
+				else if (type.equals("Upcoming Test")) {
+					event = new UpcomingTest(date, time, description);
+					calendar.addEvent(event);
+				}
+				else {
+					System.out.println("Bad event in calendar, skipping");
+				}
+				
+			}
+			
+			return calendar;
+		}
+		catch (FileNotFoundException e) {
+			return null;
+		}
+	}
+	
+	public void saveCalendar(String filename) {
+		try {
+			FileWriter fileWriter = new FileWriter(filename);
+			PrintWriter out = new PrintWriter(fileWriter);
+			
+			for (CalendarEvent event: _scheduledEvents) {
+				if (event instanceof SymptomReport) {
+					out.println("Symptom Report");
+				}
+				else if (event instanceof TestResult) {
+					out.println("Test Result");
+				}
+				else if (event instanceof UpcomingTest) {
+					out.println("Upcoming Test");
+				}
+				else {
+					out.println("Invalid Event"); // will be ignored when reading in events
+				}
+				
+				out.println(event.getDate());
+				out.println(event.getTime());
+				out.println(event.getDescription());
+			}
+			
+			out.close();
+			fileWriter.close();
+		}
+		catch (IOException e){
+			System.out.println("An issue occured while saving.");
+		}
 	}
 	
 }
