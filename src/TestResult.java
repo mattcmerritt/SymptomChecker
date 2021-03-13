@@ -1,7 +1,7 @@
 public class TestResult implements CalendarEvent {
-	int _date = 0;
-	String _time = null;
-	String _descriptive = "";
+	private int _date;
+	private String _time = null;
+	private String _descriptive = "";
 
 	public TestResult(int date, String time, String descriptive){
 		_date = date;
