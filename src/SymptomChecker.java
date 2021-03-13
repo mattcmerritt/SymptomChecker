@@ -28,7 +28,6 @@ public class SymptomChecker {
 
 		if (amountInt == 1) {
 			System.out.println("Welcome to the SymtpomApp");
-			
 
 		}
 
