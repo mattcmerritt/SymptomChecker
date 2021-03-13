@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -118,6 +121,38 @@ public class Calendar {
 		}
 		catch (FileNotFoundException e) {
 			return null;
+		}
+	}
+	
+	public void saveCalendar(String filename) {
+		try {
+			FileWriter fileWriter = new FileWriter(filename);
+			PrintWriter out = new PrintWriter(fileWriter);
+			
+			for (CalendarEvent event: _scheduledEvents) {
+				if (event instanceof SymptomReport) {
+					out.println("Symptom Report");
+				}
+				else if (event instanceof TestResult) {
+					out.println("Test Result");
+				}
+				else if (event instanceof UpcomingTest) {
+					out.println("Upcoming Test");
+				}
+				else {
+					out.println("Invalid Event"); // will be ignored when reading in events
+				}
+				
+				out.println(event.getDate());
+				out.println(event.getTime());
+				out.println(event.getDescription());
+			}
+			
+			out.close();
+			fileWriter.close();
+		}
+		catch (IOException e){
+			System.out.println("An issue occured while saving.");
 		}
 	}
 	
