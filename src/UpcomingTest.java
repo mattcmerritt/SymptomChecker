@@ -4,11 +4,12 @@ public class UpcomingTest implements CalendarEvent {
 	private String _descriptive = "";
 	private boolean _completed = false;
 
-	public UpcomingTest (int date, String time, String descriptive){
+	public UpcomingTest(int date, String time, String descriptive) {
 		_date = date;
 		_time = time;
 		_descriptive = descriptive;
 	}
+
 	// returns the date that this test is scheduled for
 	public int getDate() {
 		return _date;
@@ -25,12 +26,14 @@ public class UpcomingTest implements CalendarEvent {
 	}
 
 	// sets completed to true
-	public void completeTest()
-	 _completed = true;
-	 _descriptive = "Completed: "+ _descriptive;
+	public void completeTest() {
+		_completed = true;
+		_descriptive = "Completed: " + _descriptive;
 	}
 
 	// returns status of completed
-	public boolean getCompleted(){
+	public boolean getCompleted() {
 		return _completed;
 	}
+
+}
