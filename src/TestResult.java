@@ -1,5 +1,5 @@
 public class TestResult implements CalendarEvent {
-	int _date = null;
+	int _date = 0;
 	String _time = null;
 	String _descriptive = "";
 
