@@ -37,21 +37,58 @@ public class SymptomChecker {
 
 		System.out.println(calendar.displayCalendar());
 		System.out.println();
-		System.out.println(getDate(input));
+		int date = getDate(input);
+		mainBehavior(input, calendar, date);
+		System.out.println(calendar.displayCalendar());
 	}
 
 	public static int getDate(Scanner input) {
 		System.out.println("What is today's date? (ex. 1-31)");
 		String input2 = input.nextLine();
 		int date = Integer.parseInt(input2);
-		
+
 		if (date <= 31 && date >= 1) {
 			return date;
 		}
-		
+
 		else {
 			return getDate(input);
 		}
-		
+
+	}
+	public static void mainBehavior(Scanner in, Calendar c, int date){
+		System.out.println("What do you want to do?");
+		System.out.println("1. Print calendar\n2. Add event to calendar\n3. Check the events on a certain date\n4. Save the calendar to a file\n5. Change the current date");
+		String options = in.nextLine();
+		int intOptions = Integer.parseInt(options);
+		if(intOptions == 1){
+			System.out.println(c.displayCalendar());
+		} else if (intOptions == 2){
+			System.out.println("What type of event do you want to add?");
+			System.out.println("Put TestResult if you want test results or input anything else for a symptom report");
+			String eventOption = in.nextLine();
+			System.out.println("What time are you reporting? (please include AM/PM)");
+			String time = in.nextLine();
+			if (eventOption.toLowerCase().equals("testresult")){
+				System.out.println("What was the result of your COVID test?");
+				String description = in.nextLine();
+				TestResult result = new TestResult(date,time,description);
+				c.addEvent(result);
+			} else {
+				SymptomReport symptom = new SymptomReport(date, time);
+				System.out.println("What symptoms do you have currently. Input all symptoms one at a time and input 0 when done");
+				symptom.printSymptoms();
+				String currentSymptom = in.nextLine();
+				int currentSymptomInt = Integer.parseInt(currentSymptom);
+				while(currentSymptomInt >= 1 && currentSymptomInt <= 12){
+					symptom.addSymptoms(currentSymptomInt);
+					System.out.println("What symptoms do you have currently. Input all symptoms one at a time and input 0 when done");
+					symptom.printSymptoms();
+					currentSymptom = in.nextLine();
+					currentSymptomInt = Integer.parseInt(currentSymptom);
+				}
+				c.addEvent(symptom);
+			}
+		}
 	}
 }
