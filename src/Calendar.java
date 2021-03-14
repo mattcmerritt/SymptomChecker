@@ -156,4 +156,12 @@ public class Calendar {
 		}
 	}
 	
+	public void scheduleUpcomingTests() {
+		// this will only work for the month of March, the actual dates would need to come from the university
+		int[] dates = {1, 3, 8, 10, 15, 17, 22, 24, 29, 31};
+		for (int day: dates) {
+			addEvent(new UpcomingTest(day, "10:00 AM - 5:00 PM", "Located at Burt Khan"));
+		}
+	}
+	
 }
