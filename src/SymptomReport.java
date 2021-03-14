@@ -36,8 +36,9 @@ public class SymptomReport implements CalendarEvent {
 		}
 		
 		else {
-			_descriptive = _descriptive + "," + _SymptomArray[i - 1] ;
+			_descriptive = _descriptive + ", " + _SymptomArray[i - 1] ;
 		}
+		_counter++;
 	}
 
 	public void printSymptoms() {

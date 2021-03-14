@@ -1,11 +1,4 @@
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class SymptomChecker {
@@ -39,7 +32,6 @@ public class SymptomChecker {
 		System.out.println();
 		int date = getDate(input);
 		mainBehavior(input, calendar, date);
-		System.out.println(calendar.displayCalendar());
 	}
 
 	public static int getDate(Scanner input) {
@@ -57,12 +49,13 @@ public class SymptomChecker {
 
 	}
 	public static void mainBehavior(Scanner in, Calendar c, int date){
-		System.out.println("What do you want to do?");
-		System.out.println("1. Print calendar\n2. Add event to calendar\n3. Check the events on a certain date\n4. Save the calendar to a file\n5. Change the current date");
+		System.out.println("What do you want to do? Input a number to choose an option or 0 to quit.");
+		System.out.println("1. Print calendar\n2. Add event to calendar\n3. Check the events on a certain date\n4. Mark tests as completed\n5. Save the calendar to a file\n6. Change the current date");
 		String options = in.nextLine();
 		int intOptions = Integer.parseInt(options);
 		if(intOptions == 1){
 			System.out.println(c.displayCalendar());
+			System.out.println();
 		} else if (intOptions == 2){
 			System.out.println("What type of event do you want to add?");
 			System.out.println("Put TestResult if you want test results or input anything else for a symptom report");
@@ -89,6 +82,52 @@ public class SymptomChecker {
 				}
 				c.addEvent(symptom);
 			}
+			System.out.println();
+		} else if (intOptions == 3) {
+			// checking events
+			System.out.println("What date would you like to check for events?");
+			int checkDate = Integer.parseInt(in.nextLine());
+			CalendarEvent[] events = c.getEvents(checkDate);
+			System.out.println("We found " + events.length + " events on March " + checkDate + ".");
+			System.out.println();
+			for (CalendarEvent event: events) {
+				if (event instanceof SymptomReport) {
+					System.out.println("Symptom Report");
+				}
+				else if (event instanceof TestResult) {
+					System.out.println("Test Result");
+				}
+				else if (event instanceof UpcomingTest) {
+					System.out.println("Upcoming Test");
+				}
+				System.out.println("Time: " + event.getTime());
+				System.out.println("Description: " + event.getDescription());
+				System.out.println();
+			}
+		} else if (intOptions == 4) {
+			// mark test completed
+			System.out.println("Marking all tests from today as completed.");
+			CalendarEvent[] events = c.getEvents(date);
+			for (CalendarEvent event: events) {
+				if (event instanceof UpcomingTest) {
+					((UpcomingTest) event).completeTest();
+				}
+			}
+			System.out.println();
+		} else if (intOptions == 5) {
+			// save calendar
+			System.out.println("What would you like to name the calendar file?");
+			String filename = in.nextLine();
+			c.saveCalendar(filename);
+			System.out.println();
+		} else if (intOptions == 6) {
+			// change date
+			date = getDate(in);
+			System.out.println();
+		}
+		
+		if (intOptions > 0 && intOptions <= 6) {
+			mainBehavior(in, c, date);
 		}
 	}
 }
