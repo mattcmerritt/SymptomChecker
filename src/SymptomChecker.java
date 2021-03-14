@@ -40,6 +40,7 @@ public class SymptomChecker {
 		int date = getDate(input);
 		mainBehavior(input, calendar, date);
 		System.out.println(calendar.displayCalendar());
+		calendar.saveCalendar("Calendar.txt");
 	}
 
 	public static int getDate(Scanner input) {
@@ -58,7 +59,7 @@ public class SymptomChecker {
 	}
 	public static void mainBehavior(Scanner in, Calendar c, int date){
 		System.out.println("What do you want to do?");
-		System.out.println("1. Print calendar\n2. Add event to calendar\n3. Check the events on a certain date\n4. Save the calendar to a file\n5. Change the current date");
+		System.out.println("1. Print calendar\n2. Add event to calendar\n3. Check the events on a certain date\n4. Mark test as completed\n5. Save the calendar to a file\n6. Change the current date");
 		String options = in.nextLine();
 		int intOptions = Integer.parseInt(options);
 		if(intOptions == 1){
@@ -89,6 +90,40 @@ public class SymptomChecker {
 				}
 				c.addEvent(symptom);
 			}
+		} else if (intOptions == 3) {
+			// checking events
+			System.out.println("What date would you like to check for events?");
+			int checkDate = Integer.parseInt(in.nextLine());
+			CalendarEvent[] events = c.getEvents(checkDate);
+			System.out.println("We found " + events.length + " events on March " + checkDate + ".");
+			System.out.println();
+			for (CalendarEvent event: events) {
+				if (event instanceof SymptomReport) {
+					System.out.println("Symptom Report");
+				}
+				else if (event instanceof TestResult) {
+					System.out.println("Test Result");
+				}
+				else if (event instanceof UpcomingTest) {
+					System.out.println("Upcoming Test");
+				}
+				System.out.println("Time: " + event.getTime());
+				System.out.println("Description: " + event.getDescription());
+				System.out.println();
+			}
+		} else if (intOptions == 4) {
+			// mark test completed
+			System.out.println("Marking all tests from today as completed.");
+			CalendarEvent[] events = c.getEvents(date);
+			for (CalendarEvent event: events) {
+				if (event instanceof UpcomingTest) {
+					((UpcomingTest) event).completeTest();
+				}
+			}
+		} else if (intOptions == 5) {
+			// save calendar
+		} else if (intOptions == 6) {
+			// change date
 		}
 	}
 }
