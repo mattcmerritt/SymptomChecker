@@ -39,8 +39,6 @@ public class SymptomChecker {
 		System.out.println();
 		int date = getDate(input);
 		mainBehavior(input, calendar, date);
-		System.out.println(calendar.displayCalendar());
-		calendar.saveCalendar("Calendar.txt");
 	}
 
 	public static int getDate(Scanner input) {
@@ -58,12 +56,13 @@ public class SymptomChecker {
 
 	}
 	public static void mainBehavior(Scanner in, Calendar c, int date){
-		System.out.println("What do you want to do?");
-		System.out.println("1. Print calendar\n2. Add event to calendar\n3. Check the events on a certain date\n4. Mark test as completed\n5. Save the calendar to a file\n6. Change the current date");
+		System.out.println("What do you want to do? Input a number to choose an option or 0 to quit.");
+		System.out.println("1. Print calendar\n2. Add event to calendar\n3. Check the events on a certain date\n4. Mark tests as completed\n5. Save the calendar to a file\n6. Change the current date");
 		String options = in.nextLine();
 		int intOptions = Integer.parseInt(options);
 		if(intOptions == 1){
 			System.out.println(c.displayCalendar());
+			System.out.println();
 		} else if (intOptions == 2){
 			System.out.println("What type of event do you want to add?");
 			System.out.println("Put TestResult if you want test results or input anything else for a symptom report");
@@ -90,6 +89,7 @@ public class SymptomChecker {
 				}
 				c.addEvent(symptom);
 			}
+			System.out.println();
 		} else if (intOptions == 3) {
 			// checking events
 			System.out.println("What date would you like to check for events?");
@@ -120,10 +120,21 @@ public class SymptomChecker {
 					((UpcomingTest) event).completeTest();
 				}
 			}
+			System.out.println();
 		} else if (intOptions == 5) {
 			// save calendar
+			System.out.println("What would you like to name the calendar file?");
+			String filename = in.nextLine();
+			c.saveCalendar(filename);
+			System.out.println();
 		} else if (intOptions == 6) {
 			// change date
+			date = getDate(in);
+			System.out.println();
+		}
+		
+		if (intOptions > 0 && intOptions <= 6) {
+			mainBehavior(in, c, date);
 		}
 	}
 }
