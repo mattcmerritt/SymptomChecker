@@ -16,8 +16,7 @@ public class SymptomChecker {
 
 		System.out.println("**************Welcome to the Quinnipiac Symptom Checker App****************** \n");
 
-		System.out.println(
-				"Would you like to start a new calendar or load a calendar from a file? (\"load\" to use a file, anything else to start a new one)");
+		System.out.println("Would you like to start a new calendar or load a calendar from a file? (\"load\" to use a file, anything else to start a new one)");
 		String calendarChoice = input.nextLine();
 		Calendar calendar;
 		if (calendarChoice.toLowerCase().equals("load")) {
@@ -37,7 +36,7 @@ public class SymptomChecker {
 		}
 
 		System.out.println(calendar.displayCalendar());
-        System.out.println();
+		System.out.println();
 		System.out.println(getDate(input));
 	}
 
